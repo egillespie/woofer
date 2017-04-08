@@ -1,0 +1,47 @@
+#woof-template {
+  display: none;
+}
+
+.main {
+  background-color: #effbfb !important;
+}
+
+.row {
+  padding: 10px;
+}
+
+.row:nth-child(odd) {
+  background-color: #f7f7f9;
+}
+
+.row p {
+  margin: 0;
+}
+
+button {
+  outline: none;
+}
+
+button.close {
+  margin-left: 10px;
+}
+
+button.btn-edit,
+button.btn-edit:focus {
+  color: #4cae4c;
+}
+
+button.btn-edit:active,
+button.btn-edit:hover {
+  color: #398439;
+}
+
+button.btn-delete,
+button.btn-delete:focus {
+  color: #d43f3a;
+}
+
+button.btn-delete:active,
+button.btn-delete:hover {
+  color: #ac2925;
+}
