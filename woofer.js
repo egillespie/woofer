@@ -2,11 +2,10 @@ var woofText = document.getElementById('woof-text')
 var woofs = document.getElementById('woofs')
 var woofCreate = document.getElementById('woof-button')
 
-function addWoof (id, woof) {
+function addWoof (woof) {
   var template = document.getElementById('woof-template')
   var clone = document.importNode(template.content, true)
 
-  clone.querySelector('.row').id = id
   clone.querySelector('p').textContent = woof.text
   clone.querySelector('.btn-edit').addEventListener('click', showWoofTextbox)
   clone.querySelector('.btn-delete').addEventListener('click', deleteWoof)
@@ -20,7 +19,7 @@ function createWoof () {
   var text = woofText.value || ''
   if (!text.trim().length) return
 
-  addWoof(guid(), {
+  addWoof({
     created_at: new Date().getTime(),
     text: text
   })
@@ -55,16 +54,6 @@ function editWoof (event) {
 function deleteWoof () {
   var row = this.parentElement.parentElement
   row.parentElement.removeChild(row)
-}
-
-function guid () {
-  function s4 () {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1)
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4()
 }
 
 woofCreate.addEventListener('click', createWoof)
