@@ -14,8 +14,18 @@
   background-color: #f7f7f9;
 }
 
-.row p {
+.row .woof {
+  display: inline-block;
+}
+
+.woof .text {
   margin: 0;
+}
+
+.woof .created-at {
+  font-style: italic;
+  font-size: smaller;
+  color: darkgray;
 }
 
 button {
