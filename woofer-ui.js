@@ -1,3 +1,13 @@
+//
+//
+//            !!!!!!!! WARNING !!!!!!!!
+//
+// This file has all the functions you need to update the
+// page, but you don't need to make any changes to this
+// file to complete the project. Do so at your own risk!
+//
+//
+
 var woofText = document.getElementById('woof-text')
 var woofs = document.getElementById('woofs')
 var woofCreate = document.getElementById('woof-button')
