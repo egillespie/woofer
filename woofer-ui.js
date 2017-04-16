@@ -2,18 +2,6 @@ var woofText = document.getElementById('woof-text')
 var woofs = document.getElementById('woofs')
 var woofCreate = document.getElementById('woof-button')
 
-// Sign into the database anonymously
-var config = {
-  apiKey: "AIzaSyCbeTKiZUIefKvL1AkpnzHLoK1rZOznBSU",
-  authDomain: "woofer-db.firebaseapp.com",
-  databaseURL: "https://woofer-db.firebaseio.com",
-  projectId: "woofer-db",
-  storageBucket: "woofer-db.appspot.com",
-  messagingSenderId: "354019295570"
-}
-firebase.initializeApp(config)
-firebase.auth().signInAnonymously()
-
 // Adds a new row to the list of woofs
 function addWoofRow (woofKey, woof) {
   var template = document.getElementById('woof-template')
@@ -30,19 +18,14 @@ function addWoofRow (woofKey, woof) {
   woofText.value = ''
 }
 
-// Adds a new woof to the database
-function addWoof (text) {
-  firebase.database().ref('woofs').push({
-    created_at: new Date().getTime(),
-    text: text
-  })
-}
-
 // Get woof text from input and pass it to addWoof
 function createWoof () {
   var text = woofText.value || ''
   if (!text.trim().length) return
-  addWoof(text)
+  createWoofInDatabase({
+    created_at: new Date().getTime(),
+    text: text
+  })
 }
 
 // Make the textbox to edit a woof appear
@@ -69,7 +52,7 @@ function editWoof (event) {
 
   if (event.keyCode === 13) {
     // Enter key pressed
-    firebase.database().ref('woofs').child(row.id).child('text').set(textbox.value)
+    updateWoofInDatabase(row.id, textbox.value)
   } else if (event.keyCode === 27) {
     // Escape key pressed
     form.className = form.className.replace('show', 'hidden')
@@ -78,7 +61,8 @@ function editWoof (event) {
 }
 
 // Update the woof text in a row on the page
-function updateWoofRow (row, woof) {
+function updateWoofRow (woofKey, woof) {
+  var row = document.getElementById(woofKey)
   var form = row.querySelector('input').parentElement
   var text = row.querySelector('.text')
   form.className = form.className.replace('show', 'hidden')
@@ -87,29 +71,16 @@ function updateWoofRow (row, woof) {
 }
 
 // Remove a woof row from the page
-function deleteWoofRow (row) {
+function deleteWoofRow (woofKey) {
+  var row = document.getElementById(woofKey)
   row.parentElement.removeChild(row)
 }
 
 // Remove the clicked woof from the database
 function deleteWoof () {
   var row = this.parentElement.parentElement
-  firebase.database().ref('woofs').child(row.id).remove()
+  deleteWoofFromDatabase(row.id)
 }
-
-// Update the page when woofs are added, changed, or removed
-var woofsRef = firebase.database().ref('woofs')
-woofsRef.on('child_added', function (woofSnapshot) {
-  addWoofRow(woofSnapshot.key, woofSnapshot.val())
-})
-woofsRef.on('child_changed', function (woofSnapshot) {
-  var row = document.getElementById(woofSnapshot.key)
-  updateWoofRow(row, woofSnapshot.val())
-})
-woofsRef.on('child_removed', function (woofSnapshot) {
-  var row = document.getElementById(woofSnapshot.key)
-  deleteWoofRow(row)
-})
 
 // Event listeners to add a new woof
 woofCreate.addEventListener('click', createWoof)
